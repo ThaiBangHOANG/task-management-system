@@ -12,8 +12,8 @@ namespace TaskManagementSystem.Controllers
             new TaskItem
             {
                 Id = 1,
-                Title = "Learn ASP.NET Core",
-                Description = "Understand controller and endpoints",
+                Title = "ASP.NET Core",
+                Description = "Controller and endpoints",
                 IsCompleted = false
             },
             new TaskItem
