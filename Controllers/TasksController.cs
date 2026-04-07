@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TaskManagementSystem.API.Models;
+using TaskManagementSystem.API.Services;
 
 namespace TaskManagementSystem.Controllers
 {
@@ -7,34 +8,24 @@ namespace TaskManagementSystem.Controllers
     [Route("api/[controller]")]
     public class TasksController : ControllerBase
     {
-        private static List<TaskItem> tasks = new List<TaskItem>
+        private readonly ITaskService _taskService;
+
+        public TasksController(ITaskService taskService)
         {
-            new TaskItem
-            {
-                Id = 1,
-                Title = "ASP.NET Core",
-                Description = "Controller and endpoints",
-                IsCompleted = false
-            },
-            new TaskItem
-            {
-                Id = 2,
-                Title = "Build Task API",
-                Description = "Create CRUD endpoints",
-                IsCompleted = true
-            }
-        };
+            _taskService = taskService;
+        }
 
         [HttpGet]
         public ActionResult<IEnumerable<TaskItem>> GetTasks()
         {
+            var tasks = _taskService.GetAll();
             return Ok(tasks);
         }
 
         [HttpGet("{id}")]
         public ActionResult<TaskItem> GetTaskById(int id)
         {
-            var task = tasks.FirstOrDefault(t => t.Id == id);
+            var task = _taskService.GetById(id);
 
             if (task == null)
             {
@@ -47,25 +38,20 @@ namespace TaskManagementSystem.Controllers
         [HttpPost]
         public ActionResult<TaskItem> CreateTask(TaskItem newTask)
         {
-            newTask.Id = tasks.Max(t => t.Id) + 1;
-            tasks.Add(newTask);
+            var createdTask = _taskService.Create(newTask);
 
-            return CreatedAtAction(nameof(GetTaskById), new { id = newTask.Id }, newTask);
+            return CreatedAtAction(nameof(GetTaskById), new { id = newTask.Id }, createdTask);
         }
 
         [HttpPut("{id}")]
         public IActionResult UpdateTask(int id, TaskItem updatedTask)
         {
-            var existingTask = tasks.FirstOrDefault(t => t.Id == id);
+            var updated = _taskService.Update(id, updatedTask);
 
-            if (existingTask == null)
+            if (!updated)
             {
                 return NotFound();
             }
-
-            existingTask.Title = updatedTask.Title;
-            existingTask.Description = updatedTask.Description;
-            existingTask.IsCompleted = updatedTask.IsCompleted;
 
             return NoContent();
         }
@@ -73,15 +59,24 @@ namespace TaskManagementSystem.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteTask(int id)
         {
-            var task = tasks.FirstOrDefault(t => t.Id == id);
+            var deleted = _taskService.Delete(id);
 
-            if (task == null)
+            if (!deleted)
             {
                 return NotFound();
             }
 
-            tasks.Remove(task);
+            return NoContent();
+        }
 
+        [HttpPatch("{id}/complete")]
+        public IActionResult MarkTaskAsCompleted(int id)
+        {
+            var marked = _taskService.MarkAsCompleted(id);
+            if (!marked)
+            {
+                return NotFound();
+            }
             return NoContent();
         }
     }
