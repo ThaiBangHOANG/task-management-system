@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TaskManagementSystem.API.Models;
 using TaskManagementSystem.API.Services;
 
@@ -17,6 +18,7 @@ namespace TaskManagementSystem.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<TaskItem>> GetTasks()
         { 

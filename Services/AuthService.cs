@@ -1,14 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskManagementSystem.API.Models;
+using TaskManagementSystem.API.Services;
 using TaskManagementSystem.Data;
 
 public class AuthService
 {
     private readonly AppDbContext _context;
 
-    public AuthService(AppDbContext context)
+    private readonly JwtService _jwtService;
+
+    public AuthService(
+        AppDbContext context,
+        JwtService jwtService
+    )
     {
         _context = context;
+        _jwtService = jwtService;
     }
 
     public async Task Register(string email, string password)
@@ -24,22 +31,29 @@ public class AuthService
         await _context.SaveChangesAsync();
     }
 
-    public async Task<User?> Login(string email, string password)
+    public async Task<string?> Login(
+     string username,
+     string password
+ )
     {
-        var user = await _context.Users
-            .FirstOrDefaultAsync(x => x.Email == email);
+        var user =
+            await _context.Users
+                .FirstOrDefaultAsync(
+                    u => u.Email == u.Email
+                );
 
         if (user == null)
             return null;
 
-        var valid = BCrypt.Net.BCrypt.Verify(
-            password,
-            user.PasswordHash
-        );
+        var isPasswordValid =
+            BCrypt.Net.BCrypt.Verify(
+                password,
+                user.PasswordHash
+            );
 
-        if (!valid)
+        if (!isPasswordValid)
             return null;
 
-        return user;
+        return _jwtService.GenerateToken(user);
     }
 }

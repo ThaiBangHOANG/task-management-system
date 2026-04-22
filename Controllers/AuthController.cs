@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TaskManagementSystem.API.Controllers
 {
@@ -26,16 +27,19 @@ namespace TaskManagementSystem.API.Controllers
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(
-            string email,
-            string password
-        )
+    LoginRequest request
+)
         {
-            var user = await _service.Login(email, password);
+            var token =
+                await _service.Login(
+                    request.Email,
+                    request.Password
+                );
 
-            if (user == null)
+            if (token == null)
                 return Unauthorized();
 
-            return Ok(user);
+            return Ok(new { token });
         }
     }
 }
