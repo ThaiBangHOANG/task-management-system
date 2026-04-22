@@ -36,7 +36,7 @@ namespace TaskManagementSystem.API.Services
 
         public TaskItem Create(TaskItem newTask)
         {
-            newTask.Id = tasks.Any() ? tasks.Max(t => t.Id) : 1;
+            newTask.Id = tasks.Any() ? tasks.Max(t => t.Id) + 1 : 1;
             newTask.CreatedAt = DateTime.UtcNow;
             newTask.UpdatedAt = DateTime.UtcNow;
 
