@@ -31,9 +31,7 @@ public class AuthService
         await _context.SaveChangesAsync();
     }
 
-    public async Task<string?> Login(
-     LoginRequest request
- )
+    public async Task<string?> Login(LoginRequest request)
     {
         var user =
             await _context.Users

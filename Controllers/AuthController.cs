@@ -28,9 +28,7 @@ namespace TaskManagementSystem.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(
-            LoginRequest request
-        )
+        public async Task<IActionResult> Login(LoginRequest request)
         {
             var token =
                 await _service.Login(request);
