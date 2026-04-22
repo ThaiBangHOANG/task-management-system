@@ -9,15 +9,19 @@ namespace TaskManagementSystem.Controllers
     public class TasksController : ControllerBase
     {
         private readonly ITaskService _taskService;
+        private readonly ILogger<TasksController> _logger;
 
-        public TasksController(ITaskService taskService)
+        public TasksController(ITaskService taskService, ILogger<TasksController> logger)
         {
             _taskService = taskService;
+            _logger = logger;
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<TaskItem>> GetTasks()
-        {
+        { 
+            _logger.LogInformation("Retrieving all tasks");
+
             var tasks = _taskService.GetAll();
             return Ok(tasks);
         }
@@ -25,22 +29,53 @@ namespace TaskManagementSystem.Controllers
         [HttpGet("{id}")]
         public ActionResult<TaskItem> GetTaskById(int id)
         {
-            var task = _taskService.GetById(id);
-
-            if (task == null)
+            try
             {
-                return NotFound();
-            }
 
-            return Ok(task);
+                var task = _taskService.GetById(id);
+
+                if (task == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(task);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving task with ID {TaskId}", id);
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    "An error occurred while retrieving the task."
+                );
+            }
         }
 
         [HttpPost]
         public ActionResult<TaskItem> CreateTask(TaskItem newTask)
         {
-            var createdTask = _taskService.Create(newTask);
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
 
-            return CreatedAtAction(nameof(GetTaskById), new { id = newTask.Id }, createdTask);
+                var createdTask = _taskService.Create(newTask);
+
+                return CreatedAtAction(
+                     nameof(GetTaskById),
+                     new { id = newTask.Id },
+                     createdTask
+                 );
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    ex.Message
+                );
+            }
         }
 
         [HttpPut("{id}")]
