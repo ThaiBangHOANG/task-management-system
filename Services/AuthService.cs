@@ -32,22 +32,33 @@ public class AuthService
     }
 
     public async Task<string?> Login(
-     string username,
-     string password
+     LoginRequest request
  )
     {
         var user =
             await _context.Users
                 .FirstOrDefaultAsync(
-                    u => u.Email == u.Email
+                    u => u.Email == request.Email
                 );
+
+        Console.WriteLine("User found: " + (user != null));
+
+        if (user != null)
+        {
+            var valid = BCrypt.Net.BCrypt.Verify(
+                request.Password,
+                user.PasswordHash
+            );
+
+            Console.WriteLine("Password valid: " + valid);
+        }
 
         if (user == null)
             return null;
 
         var isPasswordValid =
             BCrypt.Net.BCrypt.Verify(
-                password,
+                request.Password,
                 user.PasswordHash
             );
 

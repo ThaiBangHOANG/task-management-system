@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.Data;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using TaskManagementSystem.API.Models;
 
 namespace TaskManagementSystem.API.Controllers
 {
@@ -16,25 +16,24 @@ namespace TaskManagementSystem.API.Controllers
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(
-            string email,
-            string password
+            RegisterRequest request
         )
         {
-            await _service.Register(email, password);
+            await _service.Register(
+                request.Email,
+                request.Password
+            );
 
             return Ok();
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(
-    LoginRequest request
-)
+            LoginRequest request
+        )
         {
             var token =
-                await _service.Login(
-                    request.Email,
-                    request.Password
-                );
+                await _service.Login(request);
 
             if (token == null)
                 return Unauthorized();
