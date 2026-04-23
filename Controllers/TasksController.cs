@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using TaskManagementSystem.API.Models;
 using TaskManagementSystem.API.Services;
+using System.Security.Claims;
 
 namespace TaskManagementSystem.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class TasksController : ControllerBase
@@ -18,13 +20,25 @@ namespace TaskManagementSystem.Controllers
             _logger = logger;
         }
 
-        [Authorize]
+        private int GetUserId()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                throw new Exception("User ID not found in token.");
+            }
+
+            return int.Parse(userId);
+        }
+
         [HttpGet]
         public ActionResult<IEnumerable<TaskItem>> GetTasks()
         { 
             _logger.LogInformation("Retrieving all tasks");
+            var userId = GetUserId();
 
-            var tasks = _taskService.GetAll();
+            var tasks = _taskService.GetAll((userId));
             return Ok(tasks);
         }
 
@@ -81,9 +95,9 @@ namespace TaskManagementSystem.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateTask(int id, TaskItem updatedTask)
+        public IActionResult UpdateTask(TaskItem updatedTask)
         {
-            var updated = _taskService.Update(id, updatedTask);
+            var updated = _taskService.Update(updatedTask);
 
             if (!updated)
             {
