@@ -80,13 +80,6 @@ namespace TaskManagementSystem.Controllers
         [HttpPost]
         public ActionResult<TaskItem> CreateTask(CreateTaskRequest request)
         {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
                 var userId = GetUserId();
 
                 var newTask = new TaskItem
@@ -107,14 +100,6 @@ namespace TaskManagementSystem.Controllers
                      new { id = createdTask.Id },
                      createdTask
                  );
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    ex.Message
-                );
-            }
         }
 
         [HttpPut("{id}")]

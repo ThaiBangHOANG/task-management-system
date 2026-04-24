@@ -4,10 +4,11 @@ namespace TaskManagementSystem.API.Models
 {
     public class CreateTaskRequest
     {
-        [Required]
-        [MaxLength(100)]
+        [Required(ErrorMessage ="Title is required")]
+        [MaxLength(100, ErrorMessage ="Max length of the title is 100")]
         public string Title { get; set; }
 
+        [MaxLength(500, ErrorMessage = "Max length of the description is 500")]
         public string Description { get; set; }
     }
 }

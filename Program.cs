@@ -5,6 +5,8 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using TaskManagementSystem.API.Services;
 using TaskManagementSystem.Data;
+using Microsoft.AspNetCore.Diagnostics;
+using TaskManagementSystem.API.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -95,6 +97,36 @@ builder.Services
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.StatusCode =
+            StatusCodes.Status500InternalServerError;
+
+        context.Response.ContentType =
+            "application/json";
+
+        var exception =
+            context.Features
+                .Get<IExceptionHandlerFeature>()
+                ?.Error;
+
+        var response =
+            new ErrorResponse
+            {
+                Message =
+                    "An unexpected error occurred",
+
+                Details =
+                    exception?.Message
+            };
+
+        await context.Response
+            .WriteAsJsonAsync(response);
+    });
+});
 
 if (app.Environment.IsDevelopment())
 {
