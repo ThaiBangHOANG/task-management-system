@@ -4,12 +4,12 @@ namespace TaskManagementSystem.API.Services
 {
     public interface ITaskService
     {
-        IEnumerable<TaskItem> GetAll(int userId);
-        TaskItem? GetById(int id, int userId);
-        TaskItem Create(TaskItem newTask);
-        bool Update(int id, UpdateTaskRequest request, int userId);
-        bool Delete(int id, int userId);
-        bool MarkAsCompleted(int id, int userId);
+        IEnumerable<TaskItem> GetAllTask(int userId, int page, int pageSize);
+        TaskItem? GetTaskById(int id, int userId);
+        TaskItem CreateTask(TaskItem newTask);
+        bool UpdateTask(int id, UpdateTaskRequest request, int userId);
+        bool DeleteTask(int id, int userId);
+        bool MarkTaskAsCompleted(int id, int userId);
 
     }
 }

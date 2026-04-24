@@ -13,9 +13,14 @@ namespace TaskManagementSystem.API.Services
             _context = context;
         }
 
-        public IEnumerable<TaskItem> GetAll(int userId)
+        public IEnumerable<TaskItem> GetAllTask(int userId, int page, int pageSize)
         {
-            return _context.Tasks.Where(t => t.UserId == userId).ToList();
+            return _context.Tasks
+                .Where(t => t.UserId == userId)
+                .OrderByDescending(t => t.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
         }
 
         public async Task<List<TaskItem>> GetAllByUser(int userId)
@@ -23,12 +28,12 @@ namespace TaskManagementSystem.API.Services
             return await _context.Tasks.Where(t => t.UserId == userId).ToListAsync();
         }
 
-        public TaskItem? GetById(int id, int userId)
+        public TaskItem? GetTaskById(int id, int userId)
         {
             return _context.Tasks.FirstOrDefault(t => t.Id == id && t.UserId == userId);
         }
 
-        public TaskItem Create(TaskItem newTask)
+        public TaskItem CreateTask(TaskItem newTask)
         {
             _context.Tasks.Add(newTask);
             newTask.CreatedAt = DateTime.UtcNow;
@@ -39,7 +44,7 @@ namespace TaskManagementSystem.API.Services
             return newTask;
         }
 
-        public bool Update(int id, UpdateTaskRequest request, int userId)
+        public bool UpdateTask(int id, UpdateTaskRequest request, int userId)
         {
             var existingTask = _context.Tasks.FirstOrDefault(t => t.Id == id && t.UserId == userId);
 
@@ -59,7 +64,7 @@ namespace TaskManagementSystem.API.Services
             return true;
         }
 
-        public bool Delete(int id, int userId)
+        public bool DeleteTask(int id, int userId)
         {
             var task = _context.Tasks.FirstOrDefault(t => t.Id == id && t.UserId == userId);
 
@@ -72,7 +77,7 @@ namespace TaskManagementSystem.API.Services
             return true;
         }
 
-        public bool MarkAsCompleted(int id, int userId)
+        public bool MarkTaskAsCompleted(int id, int userId)
         {
             var task = _context.Tasks.FirstOrDefault(t => t.Id == id && t.UserId == userId);
 
@@ -82,7 +87,7 @@ namespace TaskManagementSystem.API.Services
             }
 
             task.IsCompleted = true;
-            task.Status = "Done";
+            task.Status = Enums.TaskStatus.Pending;
 
             task.UpdatedAt = DateTime.UtcNow;
 

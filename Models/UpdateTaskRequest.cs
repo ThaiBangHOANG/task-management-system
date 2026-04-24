@@ -1,4 +1,5 @@
-﻿namespace TaskManagementSystem.API.Models
+﻿
+namespace TaskManagementSystem.API.Models
 {
     public class UpdateTaskRequest
     {
@@ -6,6 +7,6 @@
 
         public string Description { get; set; }
 
-        public string Status { get; set; }
+        public Enums.TaskStatus Status { get; set; } = Enums.TaskStatus.Pending;
     }
 }

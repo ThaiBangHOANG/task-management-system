@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TaskManagementSystem.API.Models;
 using TaskManagementSystem.API.Services;
 using System.Security.Claims;
+using TaskManagementSystem.API.Enums;
 
 namespace TaskManagementSystem.Controllers
 {
@@ -33,12 +34,20 @@ namespace TaskManagementSystem.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<TaskItem>> GetTasks()
+        public ActionResult<IEnumerable<TaskItem>> GetTasks(int page = 1, int pageSize = 10)
         { 
             _logger.LogInformation("Retrieving all tasks");
+
+            if (page <= 0)
+                page = 1;
+
+            if (pageSize <= 0 || pageSize > 50)
+                pageSize = 10;
+
             var userId = GetUserId();
 
-            var tasks = _taskService.GetAll((userId));
+            var tasks = _taskService.GetAllTask(userId, page, pageSize);
+
             return Ok(tasks);
         }
 
@@ -49,7 +58,7 @@ namespace TaskManagementSystem.Controllers
             {
                 var userId = GetUserId();
 
-                var task = _taskService.GetById(id, userId);
+                var task = _taskService.GetTaskById(id, userId);
 
                 if (task == null)
                 {
@@ -84,14 +93,14 @@ namespace TaskManagementSystem.Controllers
                     {
                     Title = request.Title,
                     Description = request.Description,
-                    Status = "Pending",
+                    //Status = TaskStatus.Pending,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
                     IsCompleted = false,
                     UserId = userId
                 };
 
-                var createdTask = _taskService.Create(newTask);
+                var createdTask = _taskService.CreateTask(newTask);
 
                 return CreatedAtAction(
                      nameof(GetTaskById),
@@ -111,7 +120,7 @@ namespace TaskManagementSystem.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateTask(int id, UpdateTaskRequest request, int userId)
         {
-            var updated = _taskService.Update(id, request, userId);
+            var updated = _taskService.UpdateTask(id, request, userId);
 
             if (!updated)
             {
@@ -126,7 +135,7 @@ namespace TaskManagementSystem.Controllers
         {
             var userId = GetUserId();
 
-            var deleted = _taskService.Delete(id, userId);
+            var deleted = _taskService.DeleteTask(id, userId);
 
             if (!deleted)
             {
@@ -141,7 +150,7 @@ namespace TaskManagementSystem.Controllers
         {
             var userId = GetUserId();
 
-            var marked = _taskService.MarkAsCompleted(id, userId);
+            var marked = _taskService.MarkTaskAsCompleted(id, userId);
 
             if (!marked)
             {
