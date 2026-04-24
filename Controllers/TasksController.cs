@@ -47,8 +47,9 @@ namespace TaskManagementSystem.Controllers
         {
             try
             {
+                var userId = GetUserId();
 
-                var task = _taskService.GetById(id);
+                var task = _taskService.GetById(id, userId);
 
                 if (task == null)
                 {
@@ -77,6 +78,10 @@ namespace TaskManagementSystem.Controllers
                     return BadRequest(ModelState);
                 }
 
+                var userId = GetUserId();
+
+                newTask.UserId = userId;
+
                 var createdTask = _taskService.Create(newTask);
 
                 return CreatedAtAction(
@@ -95,9 +100,9 @@ namespace TaskManagementSystem.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateTask(TaskItem updatedTask)
+        public IActionResult UpdateTask(int id, TaskItem updatedTask, int userId)
         {
-            var updated = _taskService.Update(updatedTask);
+            var updated = _taskService.Update(id, updatedTask, userId);
 
             if (!updated)
             {
@@ -108,9 +113,9 @@ namespace TaskManagementSystem.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteTask(int id)
+        public IActionResult DeleteTask(int id, int userId)
         {
-            var deleted = _taskService.Delete(id);
+            var deleted = _taskService.Delete(id, userId);
 
             if (!deleted)
             {
@@ -121,9 +126,9 @@ namespace TaskManagementSystem.Controllers
         }
 
         [HttpPatch("{id}/complete")]
-        public IActionResult MarkTaskAsCompleted(int id)
+        public IActionResult MarkTaskAsCompleted(int id, int userId)
         {
-            var marked = _taskService.MarkAsCompleted(id);
+            var marked = _taskService.MarkAsCompleted(id, userId);
             if (!marked)
             {
                 return NotFound();

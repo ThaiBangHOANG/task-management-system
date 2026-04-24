@@ -65,6 +65,8 @@ builder.Services
                 "JwtSettings:Key"
             ];
 
+        Console.WriteLine($"JWT Key: {key}");
+
         options.TokenValidationParameters =
             new TokenValidationParameters
             {

@@ -1,4 +1,5 @@
-﻿using TaskManagementSystem.API.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using TaskManagementSystem.API.Models;
 using TaskManagementSystem.Data;
 
 namespace TaskManagementSystem.API.Services
@@ -14,12 +15,17 @@ namespace TaskManagementSystem.API.Services
 
         public IEnumerable<TaskItem> GetAll(int userId)
         {
-            return _context.Tasks.Where(t => t.Id == userId).ToList();
+            return _context.Tasks.Where(t => t.UserId == userId).ToList();
         }
 
-        public TaskItem? GetById(int id)
+        public async Task<List<TaskItem>> GetAllByUser(int userId)
         {
-            return _context.Tasks.Find(id);
+            return await _context.Tasks.Where(t => t.UserId == userId).ToListAsync();
+        }
+
+        public TaskItem? GetById(int id, int userId)
+        {
+            return _context.Tasks.FirstOrDefault(t => t.Id == id && t.UserId == userId);
         }
 
         public TaskItem Create(TaskItem newTask)
@@ -33,9 +39,9 @@ namespace TaskManagementSystem.API.Services
             return newTask;
         }
 
-        public bool Update(TaskItem updatedTask)
+        public bool Update(int id, TaskItem updatedTask, int userId)
         {
-            var existingTask = _context.Tasks.Find(updatedTask.Id);
+            var existingTask = _context.Tasks.FirstOrDefault(t => t.Id == id && t.UserId == userId);
 
             if (existingTask == null)
             {
@@ -52,9 +58,9 @@ namespace TaskManagementSystem.API.Services
             return true;
         }
 
-        public bool Delete(int id)
+        public bool Delete(int id, int userId)
         {
-            var task = _context.Tasks.Find(id);
+            var task = _context.Tasks.FirstOrDefault(t => t.Id == id && t.UserId == userId);
 
             if (task != null)
             {
@@ -65,9 +71,9 @@ namespace TaskManagementSystem.API.Services
             return true;
         }
 
-        public bool MarkAsCompleted(int id)
+        public bool MarkAsCompleted(int id, int userId)
         {
-            var task = _context.Tasks.Find(id);
+            var task = _context.Tasks.FirstOrDefault(t => t.Id == id && t.UserId == userId);
 
             if (task == null)
             {
