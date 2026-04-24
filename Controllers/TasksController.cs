@@ -69,7 +69,7 @@ namespace TaskManagementSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult<TaskItem> CreateTask(TaskItem newTask)
+        public ActionResult<TaskItem> CreateTask(CreateTaskRequest request)
         {
             try
             {
@@ -80,13 +80,22 @@ namespace TaskManagementSystem.Controllers
 
                 var userId = GetUserId();
 
-                newTask.UserId = userId;
+                var newTask = new TaskItem
+                    {
+                    Title = request.Title,
+                    Description = request.Description,
+                    Status = "Pending",
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    IsCompleted = false,
+                    UserId = userId
+                };
 
                 var createdTask = _taskService.Create(newTask);
 
                 return CreatedAtAction(
                      nameof(GetTaskById),
-                     new { id = newTask.Id },
+                     new { id = createdTask.Id },
                      createdTask
                  );
             }
@@ -100,21 +109,23 @@ namespace TaskManagementSystem.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateTask(int id, TaskItem updatedTask, int userId)
+        public IActionResult UpdateTask(int id, UpdateTaskRequest request, int userId)
         {
-            var updated = _taskService.Update(id, updatedTask, userId);
+            var updated = _taskService.Update(id, request, userId);
 
             if (!updated)
             {
                 return NotFound();
             }
 
-            return NoContent();
+            return Ok(updated);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteTask(int id, int userId)
+        public IActionResult DeleteTask(int id)
         {
+            var userId = GetUserId();
+
             var deleted = _taskService.Delete(id, userId);
 
             if (!deleted)
@@ -126,14 +137,17 @@ namespace TaskManagementSystem.Controllers
         }
 
         [HttpPatch("{id}/complete")]
-        public IActionResult MarkTaskAsCompleted(int id, int userId)
+        public IActionResult MarkTaskAsCompleted(int id)
         {
+            var userId = GetUserId();
+
             var marked = _taskService.MarkAsCompleted(id, userId);
+
             if (!marked)
             {
                 return NotFound();
             }
-            return NoContent();
+            return Ok(marked);
         }
     }
 }

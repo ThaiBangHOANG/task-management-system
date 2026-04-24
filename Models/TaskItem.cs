@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace TaskManagementSystem.API.Models
 {
@@ -8,19 +9,20 @@ namespace TaskManagementSystem.API.Models
 
         [Required]
         [MaxLength(100)]
-        public string Title { get; set; } = string.Empty;
+        public string Title { get; set; }
 
         [MaxLength(500)]
-        public string Description { get; set; } = string.Empty;
+        public string Description { get; set; }
 
-        public string Status { get; set; } = "To Do";
+        public string Status { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; }
 
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; }
 
-        public bool IsCompleted { get; set; } = false;
+        public bool IsCompleted { get; set; }
         public int UserId { get; set; }
+        [JsonIgnore]
         public User User { get; set; }
 
     }

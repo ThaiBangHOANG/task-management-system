@@ -39,7 +39,7 @@ namespace TaskManagementSystem.API.Services
             return newTask;
         }
 
-        public bool Update(int id, TaskItem updatedTask, int userId)
+        public bool Update(int id, UpdateTaskRequest request, int userId)
         {
             var existingTask = _context.Tasks.FirstOrDefault(t => t.Id == id && t.UserId == userId);
 
@@ -48,9 +48,10 @@ namespace TaskManagementSystem.API.Services
                 return false;
             }
 
-            existingTask.Title = updatedTask.Title;
-            existingTask.Description = updatedTask.Description;
-            existingTask.Status = updatedTask.Status;
+            existingTask.Title = request.Title;
+            existingTask.Description = request.Description;
+            existingTask.Status = request.Status;
+
             existingTask.UpdatedAt = DateTime.UtcNow;
 
             _context.SaveChanges();
@@ -82,6 +83,7 @@ namespace TaskManagementSystem.API.Services
 
             task.IsCompleted = true;
             task.Status = "Done";
+
             task.UpdatedAt = DateTime.UtcNow;
 
             _context.SaveChanges();

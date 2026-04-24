@@ -7,7 +7,7 @@ namespace TaskManagementSystem.API.Services
         IEnumerable<TaskItem> GetAll(int userId);
         TaskItem? GetById(int id, int userId);
         TaskItem Create(TaskItem newTask);
-        bool Update(int id, TaskItem updatedTask, int userId);
+        bool Update(int id, UpdateTaskRequest request, int userId);
         bool Delete(int id, int userId);
         bool MarkAsCompleted(int id, int userId);
 
