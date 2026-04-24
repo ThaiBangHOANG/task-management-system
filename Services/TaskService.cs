@@ -20,7 +20,9 @@ namespace TaskManagementSystem.API.Services
             int pageSize, 
             string? search,
             TaskStatusEnum? status,
-            bool? isCompleted
+            bool? isCompleted,
+            string? sortBy,
+            bool sortDescending
         )
         {
             var query = _context.Tasks
@@ -48,6 +50,26 @@ namespace TaskManagementSystem.API.Services
                     t.IsCompleted == isCompleted.Value
                 );
             }
+
+            query = sortBy switch
+            {
+                "title" => sortDescending
+                    ? query.OrderByDescending(t => t.Title)
+                    : query.OrderBy(t => t.Title),
+
+                "createdAt" => sortDescending
+                    ? query.OrderByDescending(t => t.CreatedAt)
+                    : query.OrderBy(t => t.CreatedAt),
+
+                _ => query.OrderByDescending(t => t.CreatedAt)
+            };
+
+            var totalCount = query.Count();
+
+            var items = query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
 
             return query
                 .OrderByDescending(t => t.CreatedAt)

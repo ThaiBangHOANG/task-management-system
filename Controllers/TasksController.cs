@@ -39,7 +39,9 @@ namespace TaskManagementSystem.Controllers
             int pageSize = 10,
             string? search = null,
             TaskStatusEnum? status = null,
-            bool? isCompleted = null
+            bool? isCompleted = null,
+            string? sortBy = null,
+            bool sortDescending = false
             )
         { 
             _logger.LogInformation("Retrieving all tasks");
@@ -52,7 +54,7 @@ namespace TaskManagementSystem.Controllers
 
             var userId = GetUserId();
 
-            var tasks = _taskService.GetAllTask(userId, page, pageSize, search, status, isCompleted);
+            var tasks = _taskService.GetAllTask(userId, page, pageSize, search, status, isCompleted, sortBy, sortDescending);
 
             return Ok(tasks);
         }
