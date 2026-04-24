@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
+using TaskStatusEnum = TaskManagementSystem.API.Enums.TaskStatus;
 
 namespace TaskManagementSystem.API.Models
 {
@@ -12,6 +13,6 @@ namespace TaskManagementSystem.API.Models
         [MaxLength(500)]
         public string Description { get; set; }
 
-        public Enums.TaskStatus Status { get; set; }
+        public TaskStatusEnum Status { get; set; }
     }
 }

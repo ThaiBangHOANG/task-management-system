@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TaskManagementSystem.API.Models;
 using TaskManagementSystem.API.Services;
 using System.Security.Claims;
-using TaskManagementSystem.API.Enums;
+using TaskStatusEnum = TaskManagementSystem.API.Enums.TaskStatus;
 
 namespace TaskManagementSystem.Controllers
 {
@@ -34,7 +34,13 @@ namespace TaskManagementSystem.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<TaskItem>> GetTasks(int page = 1, int pageSize = 10)
+        public ActionResult<IEnumerable<TaskItem>> GetTasks(
+            int page = 1, 
+            int pageSize = 10,
+            string? search = null,
+            TaskStatusEnum? status = null,
+            bool? isCompleted = null
+            )
         { 
             _logger.LogInformation("Retrieving all tasks");
 
@@ -46,7 +52,7 @@ namespace TaskManagementSystem.Controllers
 
             var userId = GetUserId();
 
-            var tasks = _taskService.GetAllTask(userId, page, pageSize);
+            var tasks = _taskService.GetAllTask(userId, page, pageSize, search, status, isCompleted);
 
             return Ok(tasks);
         }
@@ -86,7 +92,7 @@ namespace TaskManagementSystem.Controllers
                     {
                     Title = request.Title,
                     Description = request.Description,
-                    //Status = TaskStatus.Pending,
+                    Status = TaskStatusEnum.Pending,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
                     IsCompleted = false,

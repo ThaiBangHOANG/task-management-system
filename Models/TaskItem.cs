@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using TaskManagementSystem.API.Enums;
+using TaskStatusEnum = TaskManagementSystem.API.Enums.TaskStatus;
 
 namespace TaskManagementSystem.API.Models
 {
@@ -15,7 +15,7 @@ namespace TaskManagementSystem.API.Models
         [MaxLength(500)]
         public string Description { get; set; }
 
-        public Enums.TaskStatus Status { get; set; } = Enums.TaskStatus.Pending;
+        public TaskStatusEnum Status { get; set; } = TaskStatusEnum.Pending;
 
         public DateTime CreatedAt { get; set; }
 

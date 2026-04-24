@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskManagementSystem.API.Models;
 using TaskManagementSystem.Data;
+using TaskStatusEnum = TaskManagementSystem.API.Enums.TaskStatus;
 
 namespace TaskManagementSystem.API.Services
 {
@@ -13,10 +14,42 @@ namespace TaskManagementSystem.API.Services
             _context = context;
         }
 
-        public IEnumerable<TaskItem> GetAllTask(int userId, int page, int pageSize)
+        public IEnumerable<TaskItem> GetAllTask(
+            int userId, 
+            int page, 
+            int pageSize, 
+            string? search,
+            TaskStatusEnum? status,
+            bool? isCompleted
+        )
         {
-            return _context.Tasks
-                .Where(t => t.UserId == userId)
+            var query = _context.Tasks
+         .Where(t => t.UserId == userId)
+         .AsQueryable();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(t =>
+                    t.Title.Contains(search) ||
+                    t.Description.Contains(search)
+                );
+            }
+
+            if (status.HasValue)
+            {
+                query = query.Where(t =>
+                    t.Status == status.Value
+                );
+            }
+
+            if (isCompleted.HasValue)
+            {
+                query = query.Where(t =>
+                    t.IsCompleted == isCompleted.Value
+                );
+            }
+
+            return query
                 .OrderByDescending(t => t.CreatedAt)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
