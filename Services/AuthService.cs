@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TaskManagementSystem.API.DTOs.Auth;
 using TaskManagementSystem.API.Models;
 using TaskManagementSystem.API.Services;
 using TaskManagementSystem.Data;

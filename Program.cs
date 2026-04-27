@@ -6,7 +6,7 @@ using System.Text;
 using TaskManagementSystem.API.Services;
 using TaskManagementSystem.Data;
 using Microsoft.AspNetCore.Diagnostics;
-using TaskManagementSystem.API.Models;
+using TaskManagementSystem.API.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 

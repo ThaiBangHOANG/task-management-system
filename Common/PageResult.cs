@@ -1,4 +1,4 @@
-﻿namespace TaskManagementSystem.API.Models
+﻿namespace TaskManagementSystem.API.Common
 {
     public class PageResult<T>
     {

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using TaskStatusEnum = TaskManagementSystem.API.Enums.TaskStatus;
 
-namespace TaskManagementSystem.API.Models
+namespace TaskManagementSystem.API.DTOs.Tasks
 {
     public class UpdateTaskRequest
     {

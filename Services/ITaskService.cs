@@ -1,4 +1,5 @@
-﻿using TaskManagementSystem.API.Models;
+﻿using TaskManagementSystem.API.DTOs.Tasks;
+using TaskManagementSystem.API.Models;
 using TaskStatusEnum = TaskManagementSystem.API.Enums.TaskStatus;
 
 namespace TaskManagementSystem.API.Services

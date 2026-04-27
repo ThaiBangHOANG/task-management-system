@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TaskManagementSystem.API.DTOs.Tasks;
 using TaskManagementSystem.API.Models;
 using TaskManagementSystem.Data;
 using TaskStatusEnum = TaskManagementSystem.API.Enums.TaskStatus;
@@ -71,11 +72,7 @@ namespace TaskManagementSystem.API.Services
                 .Take(pageSize)
                 .ToList();
 
-            return query
-                .OrderByDescending(t => t.CreatedAt)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
+            return items;
         }
 
         public async Task<List<TaskItem>> GetAllByUser(int userId)
@@ -127,9 +124,11 @@ namespace TaskManagementSystem.API.Services
             {
                 _context.Tasks.Remove(task);    
                 _context.SaveChanges();
+
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         public bool MarkTaskAsCompleted(int id, int userId)
@@ -142,7 +141,7 @@ namespace TaskManagementSystem.API.Services
             }
 
             task.IsCompleted = true;
-            task.Status = Enums.TaskStatus.Pending;
+            task.Status = TaskStatusEnum.Completed;
 
             task.UpdatedAt = DateTime.UtcNow;
 

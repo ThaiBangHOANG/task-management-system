@@ -4,6 +4,8 @@ using TaskManagementSystem.API.Models;
 using TaskManagementSystem.API.Services;
 using System.Security.Claims;
 using TaskStatusEnum = TaskManagementSystem.API.Enums.TaskStatus;
+using TaskManagementSystem.API.DTOs.Tasks;
+
 
 namespace TaskManagementSystem.Controllers
 {
@@ -34,7 +36,7 @@ namespace TaskManagementSystem.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<TaskItem>> GetTasks(
+        public ActionResult<IEnumerable<TaskDto>> GetTasks(
             int page = 1, 
             int pageSize = 10,
             string? search = null,
@@ -56,11 +58,20 @@ namespace TaskManagementSystem.Controllers
 
             var tasks = _taskService.GetAllTask(userId, page, pageSize, search, status, isCompleted, sortBy, sortDescending);
 
-            return Ok(tasks);
+            var result = tasks.Select(t => new TaskDto
+            {
+                Id = t.Id,
+                Title = t.Title,
+                Description = t.Description,
+                Status = (int)t.Status,
+                StatusName = t.Status.ToString()
+            });
+
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<TaskItem> GetTaskById(int id)
+        public ActionResult<TaskDto> GetTaskById(int id)
         {
             try
             {
@@ -73,7 +84,16 @@ namespace TaskManagementSystem.Controllers
                     return NotFound();
                 }
 
-                return Ok(task);
+                var result = new TaskDto
+                {
+                    Id = task.Id,
+                    Title = task.Title,
+                    Description = task.Description,
+                    Status = (int)task.Status,
+                    StatusName = task.Status.ToString()
+                };
+
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -111,8 +131,10 @@ namespace TaskManagementSystem.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateTask(int id, UpdateTaskRequest request, int userId)
+        public IActionResult UpdateTask(int id, UpdateTaskRequest request)
         {
+            var userId = GetUserId();
+
             var updated = _taskService.UpdateTask(id, request, userId);
 
             if (!updated)
