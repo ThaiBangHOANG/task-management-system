@@ -22,7 +22,7 @@ namespace TaskManagementSystem.API.Services
 
             var securityKey =
                 new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(key)
+                    Encoding.UTF8.GetBytes(key ?? string.Empty)
                 );
 
             var credentials =

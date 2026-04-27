@@ -10,10 +10,10 @@ namespace TaskManagementSystem.API.Models
 
         [Required]
         [MaxLength(100)]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         [MaxLength(500)]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         public TaskStatusEnum Status { get; set; } = TaskStatusEnum.Pending;
 
@@ -24,7 +24,7 @@ namespace TaskManagementSystem.API.Models
         public bool IsCompleted { get; set; }
         public int UserId { get; set; }
         [JsonIgnore]
-        public User User { get; set; }
+        public User User { get; set; } = null!;
 
     }
 }

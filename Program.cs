@@ -101,7 +101,7 @@ builder.Services
 
                 IssuerSigningKey =
                     new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(key)
+                        Encoding.UTF8.GetBytes(key ?? string.Empty)
                     )
             };
     });

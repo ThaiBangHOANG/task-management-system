@@ -8,10 +8,10 @@ namespace TaskManagementSystem.API.DTOs.Tasks
     {
         [Required]
         [MaxLength(100)]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         [MaxLength(500)]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         public TaskStatusEnum Status { get; set; }
     }
