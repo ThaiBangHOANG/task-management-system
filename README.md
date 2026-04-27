@@ -3,8 +3,19 @@
 Fullstack web application built with .NET and Angular.
 
 ## Features
-- Create / update / delete tasks
-- REST API with ASP.NET Core
+- Backend : REST API with ASP.NET Core
+      Authentication        
+      Authorization         
+      CRUD                  
+      Pagination            
+      Search                
+      Filter                
+      Sorting               
+      PagedResponse         
+      Enum                  
+      Logging               
+      Global Exception      
+      Validation
 - Frontend with Angular
 
 ## Tech Stack
