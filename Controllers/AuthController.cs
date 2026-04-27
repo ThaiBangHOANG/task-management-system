@@ -20,7 +20,7 @@ namespace TaskManagementSystem.API.Controllers
         )
         {
             await _service.Register(
-                request.Email,
+                request.Username,
                 request.Password
             );
 

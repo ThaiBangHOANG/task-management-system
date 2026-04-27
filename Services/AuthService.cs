@@ -18,11 +18,11 @@ public class AuthService
         _jwtService = jwtService;
     }
 
-    public async Task Register(string email, string password)
+    public async Task Register(string username, string password)
     {
         var user = new User
         {
-            Email = email,
+            Username = username,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(password)
         };
 
@@ -36,9 +36,11 @@ public class AuthService
         var user =
             await _context.Users
                 .FirstOrDefaultAsync(
-                    u => u.Email == request.Email
+                    u => u.Username == request.Username
                 );
 
+        Console.WriteLine("Username: " + request.Username);
+        Console.WriteLine("Password: " + request.Password);
         Console.WriteLine("User found: " + (user != null));
 
         if (user != null)

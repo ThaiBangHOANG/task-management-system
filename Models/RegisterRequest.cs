@@ -5,8 +5,7 @@ namespace TaskManagementSystem.API.Models
     public class RegisterRequest
     {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        public string Username  { get; set; }
 
         [Required]
         [MinLength(6, ErrorMessage = "Password must be at least 6 characters long")]
