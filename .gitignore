@@ -9,3 +9,6 @@ appsettings.json
 *.user
 *.suo
 *.log
+*.db
+*.db-shm
+*.db-wal
