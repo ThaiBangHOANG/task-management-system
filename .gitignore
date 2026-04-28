@@ -4,6 +4,7 @@ publish/
 .vs/
 
 appsettings.Development.json
+appsettings.json
 
 *.user
 *.suo
