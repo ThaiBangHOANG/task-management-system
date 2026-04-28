@@ -20,8 +20,7 @@ builder.Services.AddCors(options =>
             policy
                 .WithOrigins(
                     "http://localhost:4200",
-                    "http://localhost:3000",
-                    "http://192.168.1.130:3000"
+                    "https://proud-mud-076774a03.7.azurestaticapps.net"
                  )
                 .AllowAnyHeader()
                 .AllowAnyMethod();
