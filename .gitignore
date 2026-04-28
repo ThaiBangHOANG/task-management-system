@@ -1,3 +1,10 @@
 bin/
 obj/
+publish/
 .vs/
+
+appsettings.Development.json
+
+*.user
+*.suo
+*.log
