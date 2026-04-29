@@ -159,6 +159,17 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapGet("/", () =>
+{
+    return Results.Ok(new
+    {
+        message = "Task Management API Ok",
+        version = "1.0",
+        documentation = "/swagger",
+        health = "/api/health"
+    });
+});
+
 using (var scope = app.Services.CreateScope())
 {
     var context =

@@ -30,9 +30,14 @@ Frontend:
 
 https://proud-mud-076774a03.7.azurestaticapps.net
 
-API:
+Backend API:
+https://thaibang-dcghgrg4bfdaefgd.francecentral-01.azurewebsites.net
 
+Swagger Documentation:
 https://thaibang-dcghgrg4bfdaefgd.francecentral-01.azurewebsites.net/swagger
+
+Health Check:
+https://thaibang-dcghgrg4bfdaefgd.francecentral-01.azurewebsites.net/api/health
 
 ---
 
