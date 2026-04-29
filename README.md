@@ -106,6 +106,26 @@ Azure SQL Database with migrations and seeding.
 
 ---
 
+# Project Structure
+
+```text
+TaskManagementSystem.API
+├── Common
+├── Controllers
+├── Data
+├── DTOs
+│   ├── Auth
+│   └── Tasks
+├── Enums
+├── Extensions
+├── Migrations
+├── Models
+├── Repositories
+└── Services
+```
+
+---
+
 # Authentication
 
 JWT-based authentication is implemented.
