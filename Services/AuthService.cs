@@ -10,13 +10,17 @@ public class AuthService
 
     private readonly JwtService _jwtService;
 
+    private readonly ILogger<AuthService> _logger;
+
     public AuthService(
         AppDbContext context,
-        JwtService jwtService
+        JwtService jwtService,
+        ILogger<AuthService> logger 
     )
     {
         _context = context;
         _jwtService = jwtService;
+        _logger = logger;
     }
 
     public async Task Register(string username, string password)
@@ -40,9 +44,9 @@ public class AuthService
                     u => u.Username == request.Username
                 );
 
-        Console.WriteLine("Username: " + request.Username);
-        Console.WriteLine("Password: " + request.Password);
-        Console.WriteLine("User found: " + (user != null));
+        _logger.LogInformation("Username: {Username}", request.Username);
+        _logger.LogInformation("Password: {Password}", request.Password);
+        _logger.LogInformation("User found: {UserFound}", user != null);
 
         if (user != null)
         {
@@ -51,7 +55,7 @@ public class AuthService
                 user.PasswordHash
             );
 
-            Console.WriteLine("Password valid: " + valid);
+            _logger.LogInformation("Password valid: {PasswordValid}", valid);
         }
 
         if (user == null)

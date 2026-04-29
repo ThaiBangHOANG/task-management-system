@@ -10,5 +10,6 @@ namespace TaskManagementSystem.API.Models
         public string PasswordHash { get; set; } = string.Empty;
         [JsonIgnore]
         public List<TaskItem> Tasks { get; set; } = new List<TaskItem>();
+        public string Role { get; set; } = "User";
     }
 }

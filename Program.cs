@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using TaskManagementSystem.API.Common;
+using TaskManagementSystem.API.Data;
 using TaskManagementSystem.API.Services;
 using TaskManagementSystem.Data;
-using Microsoft.AspNetCore.Diagnostics;
-using TaskManagementSystem.API.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -81,8 +82,6 @@ builder.Services
             builder.Configuration[
                 "JwtSettings:Key"
             ];
-
-        Console.WriteLine($"JWT Key: {key}");
 
         options.TokenValidationParameters =
             new TokenValidationParameters
@@ -159,5 +158,14 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context =
+        scope.ServiceProvider
+            .GetRequiredService<AppDbContext>();
+
+    DbSeeder.Seed(context);
+}
 
 app.Run();
