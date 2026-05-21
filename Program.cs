@@ -13,18 +13,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+var allowedOrigins = builder.Configuration
+    .GetSection("AllowedOrigins")
+    .Get<string[]>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular",
         policy =>
         {
-            policy
-                .WithOrigins(
-                    "http://localhost:4200",
-                    "https://proud-mud-076774a03.7.azurestaticapps.net"
-                 )
-                .AllowAnyHeader()
-                .AllowAnyMethod();
+            policy.WithOrigins(allowedOrigins!)
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
         });
 });
 
