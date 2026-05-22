@@ -2,7 +2,10 @@
 
 ---
 
-# Overview
+![Docker](https://img.shields.io/badge/docker-ready-blue)
+![Azure](https://img.shields.io/badge/azure-deployed-blue)
+![CI/CD](https://img.shields.io/badge/CI/CD-GitHub_Actions-green)
+![.NET](https://img.shields.io/badge/.NET-8-purple)
 
 A production-ready Task Management REST API built with ASP.NET Core 8, Entity Framework Core, SQL Server, Docker, and deployed on Azure Container Apps.
 
@@ -51,6 +54,45 @@ Azure Container Apps deployment
 GitHub Actions CI/CD ready
 
 Production environment configuration
+
+---
+
+# Architecture
+
+```text
+┌──────────────────────┐
+│   Angular Frontend   │
+│  Azure Container App │
+└──────────┬───────────┘
+           │ HTTP API
+           ▼
+┌──────────────────────┐
+│  ASP.NET Core API    │
+│ Azure Container App  │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│      SQL Server      │
+│      Azure SQL       │
+└──────────────────────┘
+```
+
+---
+
+# Screenshots
+
+Login Page
+
+![Login](./assets/screenshots/login.png)
+
+### Dashboard
+
+![Dashboard](./assets/screenshots/dashboard.png)
+
+### Swagger API
+
+![Swagger](./assets/screenshots/swagger.png)
 
 ---
 
