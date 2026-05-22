@@ -4,25 +4,19 @@
 
 # Overview
 
-This project is a production-ready ASP.NET Core Web API that provides authentication, authorization, and full CRUD operations for managing tasks. The API is deployed on Microsoft Azure and connected to an Azure SQL Database.
-
-The goal of this project is to demonstrate real-world backend development skills suitable for a .NET Developer role.
+A production-ready Task Management REST API built with ASP.NET Core 8, Entity Framework Core, SQL Server, Docker, and deployed on Azure Container Apps.
 
 ---
 
 # Live DEMO
 
-Base URL:
-
-https://thaibang-dcghgrg4bfdaefgd.francecentral-01.azurewebsites.net
-
 Swagger Documentation:
 
-https://thaibang-dcghgrg4bfdaefgd.francecentral-01.azurewebsites.net/swagger
+https://task-api-container.livelywave-91602587.francecentral.azurecontainerapps.io/swagger
 
 Health Check
 
-https://thaibang-dcghgrg4bfdaefgd.francecentral-01.azurewebsites.net/api/health
+https://task-api-container.livelywave-91602587.francecentral.azurecontainerapps.io/
 
 Root Endpoint:
 
@@ -34,37 +28,29 @@ Returns:
 
 Frontend:
 
-https://proud-mud-076774a03.7.azurestaticapps.net
+https://task-frontend-container.livelywave-91602587.francecentral.azurecontainerapps.io
 
 ---
 
 # Features
 
-RESTful API design
+JWT Authentication & Authorization
 
-JWT Authentication
+User Registration & Login
 
-Role-based Authorization
+Task CRUD Operations
 
-Task CRUD operations
+Role-based architecture
 
-Entity Framework Core integration
+Entity Framework Core + SQL Server
 
-SQL Server database
+Dockerized backend service
 
-Global exception handling
+Azure Container Apps deployment
 
-Logging with ILogger
+GitHub Actions CI/CD ready
 
-Health check endpoint
-
-Automatic database migration
-
-Database seeding
-
-Swagger API documentation
-
-Production deployment on Azure
+Production environment configuration
 
 ---
 
@@ -78,31 +64,15 @@ SQL Server
 
 JWT Authentication
 
-Swagger
+Docker
 
-Azure App Service
+Docker Compose
+
+Azure Container Apps
 
 Azure SQL Database
 
----
-
-# Architecture
-
-Controller Layer
-
-Handles HTTP requests and responses.
-
-Service Layer
-
-Contains business logic.
-
-Data Layer
-
-Uses Entity Framework Core to interact with the database.
-
-Database
-
-Azure SQL Database with migrations and seeding.
+Github Actions
 
 ---
 
@@ -126,20 +96,6 @@ TaskManagementSystem.API
 
 ---
 
-# Authentication
-
-JWT-based authentication is implemented.
-
-Roles:
-
-Admin
-
-User
-
-Protected endpoints require a valid JWT token.
-
----
-
 # Default Admin User
 
 Automatically created when the database is empty.
@@ -157,6 +113,7 @@ Role:
 Admin
 
 ---
+
 # Running Locally
 
 Clone the repository:
@@ -179,15 +136,45 @@ dotnet run
 
 ---
 
-# Deployment
+# Run with Docker
 
-The API is deployed on:
+Build image
 
-Microsoft Azure App Service
+docker build -t task-api
 
-Deployment method:
+Run container
 
-dotnet publish -c Release
+docker run -p 5000:8080 task-api
+
+---
+
+# Docker Compose
+
+This backend service is designed to work together with the Angular frontend using Docker Compose orchestration.
+
+---
+
+# Azure Deployment
+
+The application is deployed using:
+
+DockerHub container registry
+
+Azure Container Apps
+
+GitHub Actions CI/CD
+
+---
+
+# CI/CD
+
+GitHub Actions automatically:
+
+Build Docker image
+
+Push image to DockerHub
+
+Deploy latest image to Azure Container Apps
 
 ---
 
