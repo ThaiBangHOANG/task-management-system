@@ -15,16 +15,25 @@ builder.Services.AddControllers();
 
 var allowedOrigins = builder.Configuration
     .GetSection("AllowedOrigins")
-    .Get<string[]>();
+    .Get<string[]>() ?? Array.Empty<string>();
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular",
         policy =>
         {
-            policy.WithOrigins(allowedOrigins!)
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
+            if (allowedOrigins.Length == 0)
+            {
+                policy.WithOrigins(allowedOrigins)
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
+            }
+            else
+            {
+                policy.AllowAnyOrigin()
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
+            }
         });
 });
 
