@@ -220,5 +220,10 @@ Deploy latest image to Azure Container Apps
 
 ---
 
+# Development branch Dev
+All new features and bug fixes are merged into the Dev branch first. This branch is used for testing and staging before merging to main.
+
+---
+
 # Author
 Thai Bang HOANG
