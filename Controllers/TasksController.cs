@@ -114,7 +114,7 @@ namespace TaskManagementSystem.Controllers
                     {
                     Title = request.Title,
                     Description = request.Description,
-                    Status = TaskStatusEnum.Pending,
+                    Status = request.Status,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
                     IsCompleted = false,
