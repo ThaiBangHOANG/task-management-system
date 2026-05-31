@@ -14,24 +14,14 @@ namespace TaskManagementSystem.API.Data
                 var admin = new User
                 {
                     Username = "admin",
-                    PasswordHash = HashPassword("123456"),
+                    Email = "admin@taskmanagement.local",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("123456"),
                     Role = "Admin"
                 };
 
                 context.Users.Add(admin);
                 context.SaveChanges();
             }
-        }
-
-        private static string HashPassword(string password)
-        {
-            using var sha256 = SHA256.Create();
-
-            var bytes = Encoding.UTF8.GetBytes(password);
-
-            var hash = sha256.ComputeHash(bytes);
-
-            return Convert.ToBase64String(hash);
         }
     }
 }

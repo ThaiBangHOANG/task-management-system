@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TaskStatusEnum = TaskManagementSystem.API.Enums.TaskStatus;
 
 namespace TaskManagementSystem.API.DTOs.Tasks
 {
@@ -10,5 +11,7 @@ namespace TaskManagementSystem.API.DTOs.Tasks
 
         [MaxLength(500, ErrorMessage = "Max length of the description is 500")]
         public string Description { get; set; } = string.Empty;
+
+        public TaskStatusEnum Status { get; set; }
     }
 }
