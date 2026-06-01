@@ -15,7 +15,7 @@ namespace TaskManagementSystem.API.Services
             _context = context;
         }
 
-        public IEnumerable<TaskItem> GetAllTask(
+        public PagedResult<TaskItem> GetAllTask(
             int userId, 
             int page, 
             int pageSize, 
@@ -72,7 +72,14 @@ namespace TaskManagementSystem.API.Services
                 .Take(pageSize)
                 .ToList();
 
-            return items;
+            return new PagedResult<TaskItem>
+            {
+                Items = items,
+                TotalCount = totalCount,
+                Page = page,
+                PageSize = pageSize,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
+            };
         }
 
         public async Task<List<TaskItem>> GetAllByUser(int userId)
