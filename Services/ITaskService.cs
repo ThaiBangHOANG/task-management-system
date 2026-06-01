@@ -6,7 +6,7 @@ namespace TaskManagementSystem.API.Services
 {
     public interface ITaskService
     {
-        IEnumerable<TaskItem> GetAllTask(
+        PagedResult<TaskItem> GetAllTask(
             int userId, 
             int page, 
             int pageSize, 
