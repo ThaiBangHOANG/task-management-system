@@ -58,14 +58,22 @@ namespace TaskManagementSystem.Controllers
 
             var tasks = _taskService.GetAllTask(userId, page, pageSize, search, status, isCompleted, sortBy, sortDescending);
 
-            var result = tasks.Select(t => new TaskDto
+            var result = new PagedResult<TaskDto>
             {
-                Id = t.Id,
-                Title = t.Title,
-                Description = t.Description,
-                Status = (int)t.Status,
-                StatusName = t.Status.ToString()
-            });
+                Items = tasks.Items.Select(t => new TaskDto
+                {
+                    Id = t.Id,
+                    Title = t.Title,
+                    Description = t.Description,
+                    Status = (int)t.Status,
+                    StatusName = t.Status.ToString()
+                }).ToList(),
+
+                TotalCount = tasks.TotalCount,
+                Page = tasks.Page,
+                PageSize = tasks.PageSize,
+                TotalPages = tasks.TotalPages
+            };
 
             return Ok(result);
         }
