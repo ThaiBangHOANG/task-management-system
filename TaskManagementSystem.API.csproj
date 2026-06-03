@@ -31,7 +31,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="assets\screenshots\" />
+	 	 <Folder Include="assets\screenshots\" />
+	</ItemGroup>
+	<ItemGroup>
+  		<Compile Remove="TaskManagementSystem.Tests\**\*.cs" />
+  		<EmbeddedResource Remove="TaskManagementSystem.Tests\**\*" />
+ 		 <None Remove="TaskManagementSystem.Tests\**\*" />
 	</ItemGroup>
 
 </Project>
